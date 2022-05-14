@@ -4,13 +4,17 @@ import { FaUsers, FaUserFriends, FaCodepen, FaBox } from "react-icons/fa";
 
 import GithubContext from "../context/Github/GitHub";
 import Loading from "../components/Loading"
+import RepoResults from "../components/users/RepoResults";
+
 function UserProfile() {
-    const { user, getUser, isLoading } = useContext(GithubContext);
+    const { user, getUser, isLoading, getRepos, repos } = useContext(GithubContext);
     const { login } = useParams();
 
     useEffect(() => {
-        getUser(login)
-    }, [login])
+        getUser(login);
+        getRepos(login);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const { avatar_url,
         bio,
@@ -89,7 +93,7 @@ function UserProfile() {
                     </div>
 
                 </div>
-                <div className="w-full mx-auto stats shadow-md mt-9 lg:stats-horizontal md:stats-vertical sm:stats-vertical">
+                <div className="w-full mx-auto stats shadow-md mt-9 lg:stats-horizontal md:stats-vertical sm:stats-vertical mb-5">
                     <div className="stat ">
                         <div className="stat-figure text-primary">
                             <FaUsers className="text-3xl" />
@@ -119,6 +123,7 @@ function UserProfile() {
                         <div className="stat-value">{public_gists}</div>
                     </div>
                 </div>
+                <RepoResults repos={repos} />
             </div>
         </>}
 
