@@ -12,11 +12,12 @@ function UserProfile() {
 
     useEffect(() => {
         const getUserData = async () => {
-            const aUser = await getUser(login);
-            const userRepos = await getRepos(login);
             dispatch({
                 type: "SET_LOADING"
             })
+            const aUser = await getUser(login);
+            const userRepos = await getRepos(login);
+
 
             dispatch({
                 type: "A_USER",
