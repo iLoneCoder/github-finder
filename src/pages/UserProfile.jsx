@@ -5,16 +5,33 @@ import { FaUsers, FaUserFriends, FaCodepen, FaBox } from "react-icons/fa";
 import GithubContext from "../context/Github/GitHub";
 import Loading from "../components/Loading"
 import RepoResults from "../components/users/RepoResults";
-
+import { getUser, getRepos } from "../context/Github/GithubActions";
 function UserProfile() {
-    const { user, getUser, isLoading, getRepos, repos } = useContext(GithubContext);
+    const { user, isLoading, repos, dispatch } = useContext(GithubContext);
     const { login } = useParams();
 
     useEffect(() => {
-        getUser(login);
-        getRepos(login);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        const getUserData = async () => {
+            const aUser = await getUser(login);
+            const userRepos = await getRepos(login);
+            dispatch({
+                type: "SET_LOADING"
+            })
+
+            dispatch({
+                type: "A_USER",
+                payload: aUser
+            })
+
+            dispatch({
+                type: "GET_REPOS",
+                payload: userRepos
+            })
+        }
+
+        getUserData();
+
+    }, [dispatch, login])
 
     const { avatar_url,
         bio,
